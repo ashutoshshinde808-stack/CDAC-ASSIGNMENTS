@@ -1,72 +1,92 @@
-#include <iostream>
+#include<iostream>
 using namespace std;
+class Product{
+private:
+int productId;
+string name;
+double price;
+int quantity;
 
 
-int main() {
+public:
+  void acceptDetails(){
 
-	int code;
-	double reading;
-	double temp;
-	cout << "Enter a Reading : " << endl;
-	cin >> reading;
+    cout << "Enter Product_ID : " << endl;
+    cin >> productId;
 
-	if(reading < 0){
-		code = -1 ;
-	}
-	else if(reading >= 0 && reading <= 29){
-		code = 0 ;
+     cout << "Enter Name : " << endl;
+    cin >> name;
 
-	}
-	else if(reading >= 30 && reading <= 44){
-		code = 1 ;
+     cout << "Enter Price : " << endl;
+    cin >> price;
 
-		}
-	else if(reading >= 45 && reading <= 59){
-		code = 2 ;
+     cout << "Enter Quantity : " << endl;
+    cin >> quantity;
+  }
 
-		}
-	else{
+  void displayDetails() const{
+    cout << productId << " " ;
+    cout << name << " " ;
+    cout << price << " " ;
+    cout << quantity << " " ;
+    cout << totalValue();
+  }
 
-		code = 3 ;
-	}
+  double totalValue() const{
+    return price * quantity;
+  }
 
-	cout<<"Temperature : " << reading << "°C /" ;
+  bool isLowStock(int threshold) const{
+    return quantity < threshold;
+  }
+};
 
-	temp = reading * 9 / 5 + 32;
-	cout<< temp << "°F" << endl;
+int main(){
+
+    Product product[5];
+
+    for(int i = 0 ; i < 5 ; i++){
+         cout << " Enter Product Details: " << endl;
+         product[i].acceptDetails();
+    }
+
+         cout << "\n===== ALL PRODUCTS =====\n";
+
+      cout << "ID  Name  Price  Quantity  TotalValue ";
+       for(int i = 0 ; i < 5 ; i++){
+         cout << " Enter Product Details: " << endl;
+         product[i].displayDetails();
+    }
+
+    int maxIndex=0;
+     for(int i = 0 ; i < 5 ; i++){
+        if(product[i].totalValue() > product[maxIndex].totalValue())
+        maxIndex = i;
+     }
+
+      cout << "\n=== HIGHEST TOTAL VALUE ===\n";
+    product[maxIndex].displayDetails();
+   int threshold = 0;
+   cout << " Enter stock threshold: ";
+    cin >> threshold;
+
+    cout << "\n=== LOW STOCK PRODUCTS ===\n";
+
+    bool found = false;
+
+    for (int i = 0; i < 5; i++) {
+
+        if (product[i].isLowStock(threshold)) {
+            product[i].displayDetails();
+            found = true;
+        }
+    }
+
+    if (!found) {
+        cout << "No low stock products.\n";
+    }
 
 
+    return 0;
 
-	switch (code){
-
-	case -1 :
-		cout<<"ACTION :   Sensor fault — check wiring"<< endl;
-		cout<<"STATUS :   Sensor - Error"<< endl;
-		break;
-
-	case 0 :
-		cout<<"ACTION:    No action required"<<endl;
-		cout<<"STATUS :   Normal"<< endl;
-		break;
-
-	case 1 :
-		cout<<"ACTION:    Alert sent to supervisor"<<endl;
-		cout<<"STATUS :   Warning"<< endl;
-		break;
-
-	case 2 :
-			cout<<"ACTION:   Cooling system triggered"<<endl;
-			cout<<"STATUS :   Critical"<< endl;
-			break;
-
-	case 3 :
-			cout<<"ACTION:   Emergency shutdown initiated" <<endl;
-			cout<<"STATUS :   SHUTDOWN"<< endl;
-			break;
-
-	}
-
-	cout<<(reading > 25 ? "Reading:  Above Average" : " Below Average ")<<endl;
-
-	return 0;
 }

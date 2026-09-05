@@ -1,103 +1,66 @@
-#include <iostream>
+#include<iostream>
 using namespace std;
 
-int main() {
-	double arr[100] ;
-	int N;
-	cout<<"Enter Readings:"<<endl;
-	cin >> N;
-   // INPUT READINGS
-	for(int i = 0 ; i < N ; i++){
-		cin >> arr[i];
+class Patient{
+private:
 
-	}
+int patientId;
+string name;
+int age;
+string ward;
+const string bloodGroup;
 
-	cout<<"Valid Readings: ";
+public:
+    Patient():patientId(0),name("Unknown"),age(0),ward("General"),bloodGroup("O+"){
+          cout << "Default Constructor" << endl;
+    }
+      Patient(int id , const string& name): patientId(id), name(name), age(0) ,ward("General"),bloodGroup("O+"){
+        cout << " Emergency Patient: "<<  this -> name << endl;
+          
+    }
+    Patient(int id, const string& name, int age, const string& ward, const string& bg):patientId(id),name(name),age(age),ward(ward),bloodGroup(bg){
+        cout << " Full Admission : " << this -> name << endl;;
+    }
 
-	for(int i = 0 ; i < N ; i++){
+    ~Patient(){
+        cout << " Patient: " << name << "Discharged" << endl;
+    }
 
-		if(arr[i]<0){
-			continue;  //Skips Values
-		}
+    void displayRecord() const{
+        cout << " PatientID: " << patientId << endl;
+        cout << " Patient Name: " << name << endl;
+        cout << " Patient age: " << age << endl;
+        cout << " Patient ward: " << ward << endl;
+         cout << " Patient BG: " << bloodGroup << endl;
+    }
 
-		cout << arr[i] << " ";
-	}
+    void transferWard(const string& newWard){
+          ward = newWard;
+    }
 
+};
 
-	for(int i = 0 ; i < N ; i++){
+int main(){
+    Patient p1;
 
-			if(arr[i] >= 45){
+    Patient p2( 1, "Ashutosh");
 
-			cout << " First Reading: Index  " << i << " -> " <<  arr[i]  << endl;
-			break;
-		}
+    Patient p3(101 , "Rahul" , 29 , "Cardiology" , "A+");
 
-	}
+    p1.displayRecord();
+    p2.displayRecord();
+    p3.displayRecord();
 
-	double min , max , sum = 0;
-	int valid =0 ;
+    Patient* p = new Patient[4];
 
-	for(int i = 0 ; i < N ; i++){
+    for(int i=0;i<4;i++){
+        cout << "Patient " << i+1 ;
+        p[1].displayRecord();
+    }
 
-		if(arr[i] < 0){
+    p[1].transferWard("ICU");
+    cout<<" After Transfer: " << endl;
+    p[1].displayRecord();
 
-			continue;
-		}
-
-		if(valid == 0){
-			min = arr[i];
-			max = arr[i];
-		}
-
-		if(arr[i] < min){
-
-			min = arr[i];
-		}
-
-		if(arr[i] > max){
-
-			max = arr[i];
-		}
-
-		sum = sum + arr[i] ;
-
-        valid++;
-
-	}
-
-	double avg = sum / valid ;
-
-	cout << "Min:" << min << endl;
-	cout << "Max:" << max << endl;
-	cout << "Avg:" << avg << endl;
-
-
-
-	int normal =0 , warning = 0 , critical = 0 , shutdown = 0;
-
-	cout << " Categories: " << endl;
-for(int i = 0 ; i < N ; i++){
-	  if(arr[i]<20){
-		normal++ ;
-	}
-
-	else if(arr[i] < 35){
-			warning++ ;
-		}
-
-	else if(arr[i] < 60){
-				critical++ ;
-			}
-
-    else{
-			shutdown++ ;
-			}
-
-}
-
-cout << "Normal: " << normal << endl;
-cout << "Warning: " << warning << endl;
-cout << "Critical: " << critical << endl;
-cout << "Shutdown: " << shutdown << endl;
-	return 0;
+    delete[] p;
 }
